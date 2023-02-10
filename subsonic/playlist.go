@@ -67,7 +67,7 @@ func (s *Client) CreatePlaylistWithTracks(trackIDs []string, parameters map[stri
 	if !(idPresent || namePresent) {
 		return errors.New("one of name or playlistId is mandatory, to create or update a playlist respectively")
 	}
-	var values url.Values
+	values := url.Values{}
 	for _, trID := range trackIDs {
 		values.Add("songId", trID)
 	}
@@ -107,7 +107,7 @@ func (s *Client) UpdatePlaylistTracks(
 	trackIDsToAdd []string,
 	trackIndexesToRemove []int,
 ) error {
-	var values url.Values
+	values := url.Values{}
 	values.Add("playlistId", playlistId)
 	for _, trId := range trackIDsToAdd {
 		values.Add("songIdToAdd", trId)
