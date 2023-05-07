@@ -6,6 +6,9 @@ func (s *Client) GetMusicFolders() ([]*MusicFolder, error) {
 	if err != nil {
 		return nil, err
 	}
+	if resp.MusicFolders == nil {
+		return nil, nil
+	}
 	return resp.MusicFolders.MusicFolder, nil
 }
 
@@ -37,6 +40,9 @@ func (s *Client) GetGenres() ([]*Genre, error) {
 	resp, err := s.Get("getGenres", nil)
 	if err != nil {
 		return nil, err
+	}
+	if resp.Genres == nil {
+		return nil, nil
 	}
 	return resp.Genres.Genre, nil
 }
@@ -151,6 +157,9 @@ func (s *Client) GetSimilarSongs(id string, parameters map[string]string) ([]*Ch
 	if err != nil {
 		return nil, err
 	}
+	if resp.SimilarSongs == nil {
+		return nil, nil
+	}
 	return resp.SimilarSongs.Song, nil
 }
 
@@ -168,6 +177,9 @@ func (s *Client) GetSimilarSongs2(id string, parameters map[string]string) ([]*C
 	if err != nil {
 		return nil, err
 	}
+	if resp.SimilarSongs2 == nil {
+		return nil, nil
+	}
 	return resp.SimilarSongs2.Song, nil
 }
 
@@ -184,6 +196,9 @@ func (s *Client) GetTopSongs(name string, parameters map[string]string) ([]*Chil
 	resp, err := s.Get("getTopSongs", params)
 	if err != nil {
 		return nil, err
+	}
+	if resp.TopSongs == nil {
+		return nil, nil
 	}
 	return resp.TopSongs.Song, nil
 }
