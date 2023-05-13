@@ -82,6 +82,7 @@ func (s *Client) Authenticate(password string) error {
 }
 
 // Request performs a HTTP request against the Subsonic server as the current user.
+// If a nil error is returned, the caller is responsible for closing the response body.
 func (s *Client) Request(method string, endpoint string, params url.Values) (*http.Response, error) {
 	req, err := s.setupRequest(method, endpoint, params)
 	if err != nil {
@@ -143,6 +144,7 @@ func (s *Client) getValues(endpoint string, params url.Values) (*Response, error
 	if err != nil {
 		return nil, err
 	}
+	defer response.Body.Close()
 	responseBody, err := ioutil.ReadAll(response.Body)
 	if err != nil {
 		return nil, err
@@ -161,11 +163,12 @@ func (s *Client) getValues(endpoint string, params url.Values) (*Response, error
 
 // Ping is used to test connectivity with the server. It returns true if the server is up.
 func (s *Client) Ping() bool {
-	_, err := s.Request("GET", "ping", nil)
+	resp, err := s.Request("GET", "ping", nil)
 	if err != nil {
 		log.Println(err)
 		return false
 	}
+	resp.Body.Close()
 	return true
 }
 
