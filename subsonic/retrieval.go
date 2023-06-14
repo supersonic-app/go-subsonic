@@ -6,6 +6,7 @@ import (
 	"image"
 	"io"
 	"io/ioutil"
+	"net/http"
 	"net/url"
 	"strings"
 
@@ -84,7 +85,6 @@ func (s *Client) GetStreamURL(id string, parameters map[string]string) (*url.URL
 }
 
 // Download returns a given media file. Similar to stream, but this method returns the original media data without transcoding or downsampling.
-// If a nil error is returned, the caller is responsible for closing the Reader.
 func (s *Client) Download(id string) (io.Reader, error) {
 	params := url.Values{}
 	params.Add("id", id)
@@ -113,6 +113,14 @@ func (s *Client) Download(id string) (io.Reader, error) {
 		return nil, err
 	}
 	return response.Body, nil
+}
+
+// Sends a download request and returns the raw http.Response with
+// no further processing. Caller must read and close the response body.
+func (s *Client) SendDownloadRequest(id string) (*http.Response, error) {
+	params := url.Values{}
+	params.Add("id", id)
+	return s.Request("GET", "download", params)
 }
 
 // GetCoverArt returns a cover art image for a song, album, or artist.
