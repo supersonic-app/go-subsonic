@@ -25,12 +25,13 @@ func validateListType(input string) bool {
 // GetAlbumList returns a list of random, newest, highest rated etc. albums. Similar to the album lists on the home page of the Subsonic web interface.
 //
 // Optional Parameters:
-//   size:           The number of albums to return. Max 500, default 10.
-//   offset:         The list offset. Useful if you for example want to page through the list of newest albums.
-//   fromYear:       The first year in the range. If fromYear > toYear a reverse chronological list is returned.
-//   toYear:         The last year in the range.
-//   genre:          The name of the genre, e.g., "Rock".
-//   musicFolderId:  (Since 1.11.0) Only return albums in the music folder with the given ID. See getMusicFolders.
+//
+//	size:           The number of albums to return. Max 500, default 10.
+//	offset:         The list offset. Useful if you for example want to page through the list of newest albums.
+//	fromYear:       The first year in the range. If fromYear > toYear a reverse chronological list is returned.
+//	toYear:         The last year in the range.
+//	genre:          The name of the genre, e.g., "Rock".
+//	musicFolderId:  (Since 1.11.0) Only return albums in the music folder with the given ID. See getMusicFolders.
 //
 // toYear and fromYear are required parameters when type == "byYear". genre is a required parameter when type == "byGenre".
 func (s *Client) GetAlbumList(listType string, parameters map[string]string) ([]*Child, error) {
@@ -61,18 +62,22 @@ func (s *Client) GetAlbumList(listType string, parameters map[string]string) ([]
 	if err != nil {
 		return nil, err
 	}
+	if resp.AlbumList == nil {
+		return nil, nil
+	}
 	return resp.AlbumList.Album, nil
 }
 
 // GetAlbumList2 returns a list of albums like GetAlbumList, but organized according to id3 tags.
 //
 // Optional Parameters:
-//   size:           The number of albums to return. Max 500, default 10.
-//   offset:         The list offset. Useful if you for example want to page through the list of newest albums.
-//   fromYear:       The first year in the range. If fromYear > toYear a reverse chronological list is returned.
-//   toYear:         The last year in the range.
-//   genre:          The name of the genre, e.g., "Rock".
-//   musicFolderId:  (Since 1.11.0) Only return albums in the music folder with the given ID. See getMusicFolders.
+//
+//	size:           The number of albums to return. Max 500, default 10.
+//	offset:         The list offset. Useful if you for example want to page through the list of newest albums.
+//	fromYear:       The first year in the range. If fromYear > toYear a reverse chronological list is returned.
+//	toYear:         The last year in the range.
+//	genre:          The name of the genre, e.g., "Rock".
+//	musicFolderId:  (Since 1.11.0) Only return albums in the music folder with the given ID. See getMusicFolders.
 //
 // toYear and fromYear are required parameters when type == "byYear". genre is a required parameter when type == "byGenre".
 func (s *Client) GetAlbumList2(listType string, parameters map[string]string) ([]*AlbumID3, error) {
@@ -103,21 +108,28 @@ func (s *Client) GetAlbumList2(listType string, parameters map[string]string) ([
 	if err != nil {
 		return nil, err
 	}
+	if resp.AlbumList2 == nil {
+		return nil, nil
+	}
 	return resp.AlbumList2.Album, nil
 }
 
 // GetRandomSongs returns a randomly selected set of songs limited by the optional parameters.
 //
 // Optional Parameters:
-//   size:           The maximum number of songs to return. Max 500, default 10.
-//   genre:          Only returns songs belonging to this genre.
-//   fromYear:       Only return songs published after or in this year.
-//   toYear:         Only return songs published before or in this year.
-//   musicFolderId:  Only return songs in the music folder with the given ID. See getMusicFolders.
+//
+//	size:           The maximum number of songs to return. Max 500, default 10.
+//	genre:          Only returns songs belonging to this genre.
+//	fromYear:       Only return songs published after or in this year.
+//	toYear:         Only return songs published before or in this year.
+//	musicFolderId:  Only return songs in the music folder with the given ID. See getMusicFolders.
 func (s *Client) GetRandomSongs(parameters map[string]string) ([]*Child, error) {
 	resp, err := s.Get("getRandomSongs", parameters)
 	if err != nil {
 		return nil, err
+	}
+	if resp.RandomSongs == nil {
+		return nil, nil
 	}
 	return resp.RandomSongs.Song, nil
 }
@@ -125,9 +137,10 @@ func (s *Client) GetRandomSongs(parameters map[string]string) ([]*Child, error) 
 // GetSongsByGenre returns songs in a given genre name.
 //
 // Optional Parameters:
-//   count:          The maximum number of songs to return. Max 500, default 10.
-//   offset:         The offset. Useful if you want to page through the songs in a genre.
-//   musicFolderId:  Only return songs in the music folder with the given ID. See getMusicFolders.
+//
+//	count:          The maximum number of songs to return. Max 500, default 10.
+//	offset:         The offset. Useful if you want to page through the songs in a genre.
+//	musicFolderId:  Only return songs in the music folder with the given ID. See getMusicFolders.
 func (s *Client) GetSongsByGenre(name string, parameters map[string]string) ([]*Child, error) {
 	params := make(map[string]string)
 	params["genre"] = name
@@ -138,6 +151,9 @@ func (s *Client) GetSongsByGenre(name string, parameters map[string]string) ([]*
 	if err != nil {
 		return nil, err
 	}
+	if resp.SongsByGenre == nil {
+		return nil, nil
+	}
 	return resp.SongsByGenre.Song, nil
 }
 
@@ -147,13 +163,17 @@ func (s *Client) GetNowPlaying() ([]*NowPlayingEntry, error) {
 	if err != nil {
 		return nil, err
 	}
+	if resp.NowPlaying == nil {
+		return nil, nil
+	}
 	return resp.NowPlaying.Entry, nil
 }
 
 // GetStarred returns starred albums, artists, and songs.
 //
 // Optional Parameters:
-//   musicFolderId:  Only return songs in the music folder with the given ID. See getMusicFolders.
+//
+//	musicFolderId:  Only return songs in the music folder with the given ID. See getMusicFolders.
 func (s *Client) GetStarred(parameters map[string]string) (*Starred, error) {
 	resp, err := s.Get("getStarred", parameters)
 	if err != nil {
@@ -165,7 +185,8 @@ func (s *Client) GetStarred(parameters map[string]string) (*Starred, error) {
 // GetStarred2 returns starred albums, artists, and songs arranged by id3 tag.
 //
 // Optional Parameters:
-//   musicFolderId:  Only return songs in the music folder with the given ID. See getMusicFolders.
+//
+//	musicFolderId:  Only return songs in the music folder with the given ID. See getMusicFolders.
 func (s *Client) GetStarred2(parameters map[string]string) (*Starred2, error) {
 	resp, err := s.Get("getStarred2", parameters)
 	if err != nil {
