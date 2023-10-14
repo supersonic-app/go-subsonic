@@ -24,6 +24,9 @@ func TestUnmarshalOpenSubsonicAlbumList(t *testing.T) {
 	if parsed.AlbumList2.Album[1].Artist == "" {
 		t.Error("Did not parse album correctly")
 	}
+	if len(parsed.AlbumList2.Album[0].Artists) < 2 {
+		t.Error("Did not parse OpenSubsonic Artists attribute correctly")
+	}
 }
 
 func runListsTests(client Client, t *testing.T) {

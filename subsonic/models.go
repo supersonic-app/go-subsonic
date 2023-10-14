@@ -15,6 +15,13 @@ import (
 	"time"
 )
 
+// Used for any entity where only a name and an ID appear.
+// Eg. OpenSubsonic artists list for an album.
+type IDName struct {
+	ID   string `xml:"id,attr,omitempty"`
+	Name string `xml:"name,attr,omitempty"`
+}
+
 // AlbumID3 is an album that's organized by music file tags.
 type AlbumID3 struct {
 	ID        string    `xml:"id,attr"`        // Manually added
@@ -22,6 +29,7 @@ type AlbumID3 struct {
 	Name      string    `xml:"name,attr"`
 	Artist    string    `xml:"artist,attr,omitempty"`
 	ArtistID  string    `xml:"artistId,attr,omitempty"`
+	Artists   []IDName  `xml:"artists,omitempty"` // OpenSubsonic extension
 	CoverArt  string    `xml:"coverArt,attr,omitempty"`
 	SongCount int       `xml:"songCount,attr"`
 	Duration  int       `xml:"duration,attr"`
@@ -30,6 +38,7 @@ type AlbumID3 struct {
 	Starred   time.Time `xml:"starred,attr,omitempty"`
 	Year      int       `xml:"year,attr,omitempty"`
 	Genre     string    `xml:"genre,attr,omitempty"`
+	Genres    []IDName  `xml:"genres,omitempty"` // OpenSubsonic extension
 }
 
 func (t *AlbumID3) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
@@ -223,9 +232,11 @@ type Child struct {
 	Title                 string    `xml:"title,attr"`
 	Album                 string    `xml:"album,attr,omitempty"`
 	Artist                string    `xml:"artist,attr,omitempty"`
+	Artists               []IDName  `xml:"artists,omitempty"` // OpenSubsonic extension
 	Track                 int       `xml:"track,attr,omitempty"`
 	Year                  int       `xml:"year,attr,omitempty"`
 	Genre                 string    `xml:"genre,attr,omitempty"`
+	Genres                []IDName  `xml:"genres,omitempty"` // OpenSubsonic extension
 	CoverArt              string    `xml:"coverArt,attr,omitempty"`
 	Size                  int64     `xml:"size,attr,omitempty"`
 	ContentType           string    `xml:"contentType,attr,omitempty"`
