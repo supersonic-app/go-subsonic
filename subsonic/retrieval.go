@@ -13,6 +13,8 @@ import (
 	_ "image/gif"
 	_ "image/jpeg"
 	_ "image/png"
+
+	_ "golang.org/x/image/webp"
 )
 
 // Stream returns the contents of a song, optionally transcoded, from the server.
