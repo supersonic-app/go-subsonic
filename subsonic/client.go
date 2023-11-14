@@ -28,7 +28,7 @@ const (
 	libraryVersion      = "0.0.5"
 )
 
-const (
+var (
 	ErrAuthenticationFailure = errors.New("authentication failure")
 )
 
