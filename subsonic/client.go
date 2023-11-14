@@ -12,6 +12,7 @@ package subsonic
 import (
 	"crypto/md5"
 	"encoding/xml"
+	"errors"
 	"fmt"
 	"io"
 	"io/ioutil"
@@ -23,8 +24,12 @@ import (
 )
 
 const (
-	supportedApiVersion = "1.8.0"
+	supportedApiVersion = "1.16.1"
 	libraryVersion      = "0.0.5"
+)
+
+const (
+	ErrAuthenticationFailure = errors.New("authentication failure")
 )
 
 type Client struct {
@@ -48,7 +53,10 @@ func generateSalt() string {
 	return string(b)
 }
 
-// Authenticate authenticates the current user with a provided password. The password is salted before transmission and requires Subsonic > 1.13.0.
+// Authenticate authenticates the current user with a provided password.
+// If s.PasswordAuth is false, the password is salted before transmission and requires Subsonic > 1.13.0.
+// Returns ErrAuthenticationFailure if the user/pass combo is incorrect,
+// or another error type for any other failure reason.
 func (s *Client) Authenticate(password string) error {
 	if s.PasswordAuth {
 		s.password = password
@@ -71,11 +79,11 @@ func (s *Client) Authenticate(password string) error {
 	// Don't use the s.Ping method because that always returns true as long as the servers is up.
 	resp, err := s.Get("ping", nil)
 	if err != nil {
-		return fmt.Errorf("Authentication failed: %s", err)
+		return err // connectivity or other non-authentication-related error
 	}
 
 	if resp.Error != nil {
-		return fmt.Errorf("Authentication failed: %s", resp.Error.Message)
+		return ErrAuthenticationFailure
 	}
 
 	return nil
@@ -162,6 +170,8 @@ func (s *Client) getValues(endpoint string, params url.Values) (*Response, error
 }
 
 // Ping is used to test connectivity with the server. It returns true if the server is up.
+// Should generally NOT be called before authenticating as it will be considered an authentication
+// by the Subsonic server. (Though this function will still return true)
 func (s *Client) Ping() bool {
 	resp, err := s.Request("GET", "ping", nil)
 	if err != nil {
