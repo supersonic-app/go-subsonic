@@ -15,7 +15,6 @@ import (
 	"errors"
 	"fmt"
 	"io"
-	"io/ioutil"
 	"log"
 	"math/rand"
 	"net/http"
@@ -77,12 +76,17 @@ func (s *Client) Authenticate(password string) error {
 
 	// Test authentication
 	// Don't use the s.Ping method because that always returns true as long as the servers is up.
-	resp, err := s.Get("ping", nil)
+	resp, err := s.Request("GET", "ping", nil)
 	if err != nil {
-		return err // connectivity or other non-authentication-related error
+		return err
+	}
+	defer resp.Body.Close()
+	subsonicResp, err := unmarshalResponse(resp.Body)
+	if err != nil {
+		return err
 	}
 
-	if resp.Error != nil {
+	if subsonicResp.Error != nil {
 		return ErrAuthenticationFailure
 	}
 
@@ -153,20 +157,27 @@ func (s *Client) getValues(endpoint string, params url.Values) (*Response, error
 		return nil, err
 	}
 	defer response.Body.Close()
-	responseBody, err := ioutil.ReadAll(response.Body)
-	if err != nil {
-		return nil, err
-	}
-	parsed := Response{}
-	err = xml.Unmarshal(responseBody, &parsed)
+	parsed, err := unmarshalResponse(response.Body)
 	if err != nil {
 		return nil, err
 	}
 	if parsed.Error != nil {
-		return nil, fmt.Errorf("Error #%d: %s\n", parsed.Error.Code, parsed.Error.Message)
+		return nil, fmt.Errorf("Error #%d: %s", parsed.Error.Code, parsed.Error.Message)
 	}
 	//log.Printf("%s: %s\n", endpoint, string(responseBody))
-	return &parsed, nil
+	return parsed, nil
+}
+
+func unmarshalResponse(resp io.Reader) (*Response, error) {
+	responseBody, err := io.ReadAll(resp)
+	if err != nil {
+		return nil, err
+	}
+	parsed := &Response{}
+	if err = xml.Unmarshal(responseBody, parsed); err != nil {
+		return nil, err
+	}
+	return parsed, nil
 }
 
 // Ping is used to test connectivity with the server. It returns true if the server is up.
