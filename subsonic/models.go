@@ -660,48 +660,51 @@ type podcasts struct {
 
 // Response is the main target for unmarshalling data from the API - everything within the "subsonic-response" key
 type Response struct {
-	License               *License               `xml:"license"`
-	MusicFolders          *musicFolders          `xml:"musicFolders"`
-	Indexes               *Indexes               `xml:"indexes"`
-	Directory             *Directory             `xml:"directory"`
-	Genres                *genres                `xml:"genres"`
-	Artists               *ArtistsID3            `xml:"artists"`
-	Artist                *ArtistID3             `xml:"artist"`
-	Album                 *AlbumID3              `xml:"album"`
-	Song                  *Child                 `xml:"song"`
-	NowPlaying            *nowPlaying            `xml:"nowPlaying"`
-	SearchResult2         *SearchResult2         `xml:"searchResult2"`
-	SearchResult3         *SearchResult3         `xml:"searchResult3"`
-	Playlists             *playlists             `xml:"playlists"`
-	Playlist              *Playlist              `xml:"playlist"`
-	JukeboxStatus         *JukeboxStatus         `xml:"jukeboxStatus"`
-	JukeboxPlaylist       *JukeboxPlaylist       `xml:"jukeboxPlaylist"`
-	Users                 *users                 `xml:"users"`
-	User                  *User                  `xml:"user"`
-	ChatMessages          *chatMessages          `xml:"chatMessages"`
-	AlbumList             *albumList             `xml:"albumList"`
-	AlbumList2            *albumList2            `xml:"albumList2"`
-	RandomSongs           *songs                 `xml:"randomSongs"`
-	SongsByGenre          *songs                 `xml:"songsByGenre"`
-	Lyrics                *Lyrics                `xml:"lyrics"`
-	Podcasts              *podcasts              `xml:"podcasts"`
-	NewestPodcasts        *newestPodcasts        `xml:"newestPodcasts"`
-	InternetRadioStations *internetRadioStations `xml:"internetRadioStations"`
-	Bookmarks             *bookmarks             `xml:"bookmarks"`
-	PlayQueue             *PlayQueue             `xml:"playQueue"`
-	Shares                *shares                `xml:"shares"`
-	Starred               *Starred               `xml:"starred"`
-	Starred2              *Starred2              `xml:"starred2"`
-	AlbumInfo             *AlbumInfo             `xml:"albumInfo"`
-	ArtistInfo            *ArtistInfo            `xml:"artistInfo"`
-	ArtistInfo2           *ArtistInfo2           `xml:"artistInfo2"`
-	SimilarSongs          *similarSongs          `xml:"similarSongs"`
-	SimilarSongs2         *similarSongs2         `xml:"similarSongs2"`
-	TopSongs              *topSongs              `xml:"topSongs"`
-	ScanStatus            *ScanStatus            `xml:"scanStatus"`
-	Error                 *Error                 `xml:"error"`
-	Status                string                 `xml:"status,attr"`  // May be one of ok, failed
-	Version               string                 `xml:"version,attr"` // Must match the pattern \d+\.\d+\.\d+
+	License                *License                `xml:"license"`
+	MusicFolders           *musicFolders           `xml:"musicFolders"`
+	Indexes                *Indexes                `xml:"indexes"`
+	Directory              *Directory              `xml:"directory"`
+	Genres                 *genres                 `xml:"genres"`
+	Artists                *ArtistsID3             `xml:"artists"`
+	Artist                 *ArtistID3              `xml:"artist"`
+	Album                  *AlbumID3               `xml:"album"`
+	Song                   *Child                  `xml:"song"`
+	NowPlaying             *nowPlaying             `xml:"nowPlaying"`
+	SearchResult2          *SearchResult2          `xml:"searchResult2"`
+	SearchResult3          *SearchResult3          `xml:"searchResult3"`
+	Playlists              *playlists              `xml:"playlists"`
+	Playlist               *Playlist               `xml:"playlist"`
+	JukeboxStatus          *JukeboxStatus          `xml:"jukeboxStatus"`
+	JukeboxPlaylist        *JukeboxPlaylist        `xml:"jukeboxPlaylist"`
+	Users                  *users                  `xml:"users"`
+	User                   *User                   `xml:"user"`
+	ChatMessages           *chatMessages           `xml:"chatMessages"`
+	AlbumList              *albumList              `xml:"albumList"`
+	AlbumList2             *albumList2             `xml:"albumList2"`
+	RandomSongs            *songs                  `xml:"randomSongs"`
+	SongsByGenre           *songs                  `xml:"songsByGenre"`
+	Lyrics                 *Lyrics                 `xml:"lyrics"`
+	Podcasts               *podcasts               `xml:"podcasts"`
+	NewestPodcasts         *newestPodcasts         `xml:"newestPodcasts"`
+	InternetRadioStations  *internetRadioStations  `xml:"internetRadioStations"`
+	Bookmarks              *bookmarks              `xml:"bookmarks"`
+	PlayQueue              *PlayQueue              `xml:"playQueue"`
+	Shares                 *shares                 `xml:"shares"`
+	Starred                *Starred                `xml:"starred"`
+	Starred2               *Starred2               `xml:"starred2"`
+	AlbumInfo              *AlbumInfo              `xml:"albumInfo"`
+	ArtistInfo             *ArtistInfo             `xml:"artistInfo"`
+	ArtistInfo2            *ArtistInfo2            `xml:"artistInfo2"`
+	SimilarSongs           *similarSongs           `xml:"similarSongs"`
+	SimilarSongs2          *similarSongs2          `xml:"similarSongs2"`
+	TopSongs               *topSongs               `xml:"topSongs"`
+	ScanStatus             *ScanStatus             `xml:"scanStatus"`
+	Error                  *Error                  `xml:"error"`
+	Status                 string                  `xml:"status,attr"`  // May be one of ok, failed
+	Version                string                  `xml:"version,attr"` // Must match the pattern \d+\.\d+\.\d+
+	OpenSubsonic           bool                    `xml:"openSubsonic,attr"`
+	OpenSubsonicExtensions *openSubsonicExtensions `xml:"openSubsonicExtensions"`
+	LyricsList             *LyricsList             `xml:"lyricsList"`
 }
 
 type ScanStatus struct {
