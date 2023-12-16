@@ -236,7 +236,8 @@ type Child struct {
 	Track                 int       `xml:"track,attr,omitempty"`
 	Year                  int       `xml:"year,attr,omitempty"`
 	Genre                 string    `xml:"genre,attr,omitempty"`
-	Genres                []IDName  `xml:"genres,omitempty"` // OpenSubsonic extension
+	Genres                []IDName  `xml:"genres,omitempty"`  // OpenSubsonic extension
+	Comment               string    `xml:"comment,omitempty"` // OpenSubsonic extension
 	CoverArt              string    `xml:"coverArt,attr,omitempty"`
 	Size                  int64     `xml:"size,attr,omitempty"`
 	ContentType           string    `xml:"contentType,attr,omitempty"`
