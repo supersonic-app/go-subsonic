@@ -23,8 +23,8 @@ import (
 )
 
 const (
-	supportedApiVersion = "1.16.1"
-	libraryVersion      = "0.0.5"
+	defaultAPIVersion = "1.15.0"
+	libraryVersion    = "0.0.5"
 )
 
 var (
@@ -32,14 +32,16 @@ var (
 )
 
 type Client struct {
-	Client       *http.Client
-	BaseUrl      string
-	User         string
-	ClientName   string
-	PasswordAuth bool
-	password     string
-	salt         string
-	token        string
+	Client              *http.Client
+	BaseUrl             string
+	User                string
+	ClientName          string
+	PasswordAuth        bool
+	RequestedAPIVersion string
+
+	password string
+	salt     string
+	token    string
 }
 
 func generateSalt() string {
@@ -130,7 +132,11 @@ func (s *Client) setupRequest(method string, endpoint string, params url.Values)
 
 	q := req.URL.Query()
 	q.Add("f", "xml")
-	q.Add("v", supportedApiVersion)
+	apiVersion := defaultAPIVersion
+	if s.RequestedAPIVersion != "" {
+		apiVersion = s.RequestedAPIVersion
+	}
+	q.Add("v", apiVersion)
 	q.Add("c", s.ClientName)
 	q.Add("u", s.User)
 	if s.PasswordAuth {
