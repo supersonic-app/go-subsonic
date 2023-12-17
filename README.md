@@ -104,6 +104,10 @@ If you intend on testing with your own server, modify the top-level TestSubsonic
 - [x] getScanStatus (1.15.0)
 - [x] startScan (1.15.0)
 
+## Jukebox
+
+- [x] jukeboxControl (1.2.0)
+
 ## Bookmarks
 
 - [ ] getBookmarks (1.9.0)
@@ -128,10 +132,6 @@ If you intend on testing with your own server, modify the top-level TestSubsonic
 - [ ] deletePodcastChannel (1.9.0)
 - [ ] deletePodcastEpisode (1.9.0)
 - [ ] downloadPodcastEpisode (1.9.0)
-
-## Jukebox
-
-- [ ] jukeboxControl (1.2.0)
 
 ## Internet radio
 
