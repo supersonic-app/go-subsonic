@@ -5,6 +5,7 @@ const (
 	TranscodeOffset     = "transcodeOffset"
 )
 
+// Get the list of supported OpenSubsonic extensions for this server.
 func (c *Client) GetOpenSubsonicExtensions() ([]*OpenSubsonicExtension, error) {
 	resp, err := c.Get("getOpenSubsonicExtensions", nil)
 	if err != nil {
@@ -13,7 +14,7 @@ func (c *Client) GetOpenSubsonicExtensions() ([]*OpenSubsonicExtension, error) {
 	if resp.OpenSubsonicExtensions == nil {
 		return nil, nil
 	}
-	return resp.OpenSubsonicExtensions.OpenSubsonicExtensions, nil
+	return resp.OpenSubsonicExtensions, nil
 }
 
 // Get structured lyrics for a track.
