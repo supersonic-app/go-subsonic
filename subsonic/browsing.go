@@ -15,8 +15,9 @@ func (s *Client) GetMusicFolders() ([]*MusicFolder, error) {
 // GetIndexes returns the index of entries by letter/number.
 //
 // Optional Parameters:
-//   musicFolderId:    Only return songs in the music folder with the given ID. See getMusicFolders.
-//   ifModifiedSince:  If specified, only return a result if the artist collection has changed since the given time (in milliseconds since 1 Jan 1970).
+//
+//	musicFolderId:    Only return songs in the music folder with the given ID. See getMusicFolders.
+//	ifModifiedSince:  If specified, only return a result if the artist collection has changed since the given time (in milliseconds since 1 Jan 1970).
 func (s *Client) GetIndexes(parameters map[string]string) (*Indexes, error) {
 	resp, err := s.Get("getIndexes", parameters)
 	if err != nil {
@@ -50,7 +51,8 @@ func (s *Client) GetGenres() ([]*Genre, error) {
 // GetArtists returns all artists in the server.
 //
 // Optional Parameters:
-//   musicFolderId:  Only return songs in the music folder with the given ID. See getMusicFolders.
+//
+//	musicFolderId:  Only return songs in the music folder with the given ID. See getMusicFolders.
 func (s *Client) GetArtists(parameters map[string]string) (*ArtistsID3, error) {
 	resp, err := s.Get("getArtists", parameters)
 	if err != nil {
@@ -89,8 +91,9 @@ func (s *Client) GetSong(id string) (*Child, error) {
 // GetArtistInfo returns biography, image links, and similar artists from last.fm.
 //
 // Optional Parameters:
-//   count:             Max number of similar artists to return.
-//   includeNotPresent: Whether to return artists that are not present in the media library.
+//
+//	count:             Max number of similar artists to return.
+//	includeNotPresent: Whether to return artists that are not present in the media library.
 func (s *Client) GetArtistInfo(id string, parameters map[string]string) (*ArtistInfo, error) {
 	params := make(map[string]string)
 	params["id"] = id
@@ -107,8 +110,9 @@ func (s *Client) GetArtistInfo(id string, parameters map[string]string) (*Artist
 // GetArtistInfo2 returns biography, image links, and similar artists like GetArtistInfo, but using id3 tags.
 //
 // Optional Parameters:
-//   count:             Max number of similar artists to return.
-//   includeNotPresent: Whether to return artists that are not present in the media library.
+//
+//	count:             Max number of similar artists to return.
+//	includeNotPresent: Whether to return artists that are not present in the media library.
 func (s *Client) GetArtistInfo2(id string, parameters map[string]string) (*ArtistInfo2, error) {
 	params := make(map[string]string)
 	params["id"] = id
@@ -146,7 +150,8 @@ func (s *Client) GetAlbumInfo2(id string) (*AlbumInfo, error) {
 // This is mostly used for radio features. This accepts artist, album, or song IDs.
 //
 // Optional Parameters:
-//   count: Number of songs to return
+//
+//	count: Number of songs to return
 func (s *Client) GetSimilarSongs(id string, parameters map[string]string) ([]*Child, error) {
 	params := make(map[string]string)
 	params["id"] = id
@@ -166,7 +171,8 @@ func (s *Client) GetSimilarSongs(id string, parameters map[string]string) ([]*Ch
 // GetSimilarSongs2 finds similar songs like GetSimilarSongs, but using id3 tags.
 //
 // Optional Parameters:
-//   count: Number of songs to return
+//
+//	count: Number of songs to return
 func (s *Client) GetSimilarSongs2(id string, parameters map[string]string) ([]*Child, error) {
 	params := make(map[string]string)
 	params["id"] = id
@@ -186,7 +192,8 @@ func (s *Client) GetSimilarSongs2(id string, parameters map[string]string) ([]*C
 // GetTopSongs returns the top songs for a given artist by name.
 //
 // Optional Parameters:
-//   count: Number of songs to return
+//
+//	count: Number of songs to return
 func (s *Client) GetTopSongs(name string, parameters map[string]string) ([]*Child, error) {
 	params := make(map[string]string)
 	params["artist"] = name
@@ -201,4 +208,15 @@ func (s *Client) GetTopSongs(name string, parameters map[string]string) ([]*Chil
 		return nil, nil
 	}
 	return resp.TopSongs.Song, nil
+}
+
+func (s *Client) GetInternetRadioStations() ([]*InternetRadioStation, error) {
+	resp, err := s.Get("getInternetRadioStations", nil)
+	if err != nil {
+		return nil, err
+	}
+	if resp.InternetRadioStations == nil {
+		return nil, nil
+	}
+	return resp.InternetRadioStations.InternetRadioStation, nil
 }
