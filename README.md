@@ -135,7 +135,7 @@ If you intend on testing with your own server, modify the top-level TestSubsonic
 
 ## Internet radio
 
-- [ ] getInternetRadioStations (1.9.0)
+- [x] getInternetRadioStations (1.9.0)
 - [ ] createInternetRadioStation (1.16.0)
 - [ ] updateInternetRadioStation (1.16.0)
 - [ ] deleteInternetRadioStation (1.16.0)
