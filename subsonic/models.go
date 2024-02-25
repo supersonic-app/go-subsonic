@@ -730,6 +730,7 @@ type SearchResult3 struct {
 }
 
 type Share struct {
+	ID          string    `xml:"id,attr"`
 	Entry       []*Child  `xml:"entry,omitempty"`
 	Url         string    `xml:"url,attr"`
 	Description string    `xml:"description,attr,omitempty"`

@@ -11,6 +11,7 @@ services:
       ND_SCANINTERVAL: 1m
       ND_LOGLEVEL: info
       ND_SESSIONTIMEOUT: 24h
+      ND_ENABLESHARING: true
       ND_BASEURL: ""
     volumes:
       - "./build/data:/data"

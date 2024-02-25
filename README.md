@@ -118,10 +118,10 @@ If you intend on testing with your own server, modify the top-level TestSubsonic
 
 ## Sharing
 
-- [ ] getShares (1.6.0)
-- [ ] createShare (1.6.0)
-- [ ] updateShare (1.6.0)
-- [ ] deleteShare (1.6.0)
+- [x] getShares (1.6.0)
+- [x] createShare (1.6.0)
+- [x] updateShare (1.6.0)
+- [x] deleteShare (1.6.0)
 
 ## Podcast
 
