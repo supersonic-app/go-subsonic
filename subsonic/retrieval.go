@@ -201,3 +201,24 @@ func (s *Client) GetAvatar(username string) (image.Image, error) {
 	}
 	return image, nil
 }
+
+// GetLyrics earches for and returns lyrics for a given song.
+//
+// Optional Parameters:
+//
+//	title:            The song title
+//	artist:           The song artist
+func (s *Client) GetLyrics(title, artist string) (*Lyrics, error) {
+	params := map[string]string{}
+	if title != "" {
+		params["title"] = title
+	}
+	if artist != "" {
+		params["artist"] = artist
+	}
+	response, err := s.Get("getLyrics", params)
+	if err != nil {
+		return nil, err
+	}
+	return response.Lyrics, nil
+}

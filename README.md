@@ -80,7 +80,7 @@ If you intend on testing with your own server, modify the top-level TestSubsonic
 - [x] stream (1.0.0)
 - [x] download (1.0.0)
 - [x] getCoverArt (1.0.0)
-- [ ] getLyrics (1.2.0)
+- [x] getLyrics (1.2.0)
 - [x] getAvatar (1.8.0)
 
 ## Media annotation

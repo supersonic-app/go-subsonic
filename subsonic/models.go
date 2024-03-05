@@ -421,6 +421,7 @@ func (t *License) UnmarshalXML(d *xml.Decoder, start xml.StartElement) error {
 type Lyrics struct {
 	Artist string `xml:"artist,attr,omitempty"`
 	Title  string `xml:"title,attr,omitempty"`
+	Text   string `xml:",chardata"`
 }
 
 // MusicFolder is a representation of a source of music files added to the server. It is identified primarily by the numeric ID.
