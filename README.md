@@ -113,8 +113,8 @@ If you intend on testing with your own server, modify the top-level TestSubsonic
 - [ ] getBookmarks (1.9.0)
 - [ ] createBookmark (1.9.0)
 - [ ] deleteBookmark (1.9.0)
-- [ ] getPlayQueue (1.12.0)
-- [ ] savePlayQueue (1.12.0)
+- [x] getPlayQueue (1.12.0)
+- [x] savePlayQueue (1.12.0)
 
 ## Sharing
 

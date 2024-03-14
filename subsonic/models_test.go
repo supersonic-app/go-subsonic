@@ -51,6 +51,12 @@ const (
 	<child id="11" parent="10" title="Arrival" artist="ABBA" isDir="true" coverArt="22"/>
 	<child id="12" parent="10" title="Super Trouper" artist="ABBA" isDir="true" coverArt="23"/>
 	</directory>`
+
+	playQueueXML = `<playQueue current="133" position="45000" username="admin" changed="2015-02-18T15:22:22.825Z" changedBy="android">
+	<entry id="132" parent="131" isDir="false" title="These Are Days" album="MTV Unplugged" artist="10,000 Maniacs" track="1" year="1993" genre="Soft Rock" coverArt="131" size="5872262" contentType="audio/mpeg" suffix="mp3" duration="293" bitRate="160" path="10,000 Maniacs/MTV Unplugged/01 - These Are Days.mp3" isVideo="false" created="2004-10-25T20:36:03.000Z" albumId="0" artistId="0" type="music"/>
+	<entry id="133" parent="131" isDir="false" title="Eat For Two" album="MTV Unplugged" artist="10,000 Maniacs" track="2" year="1993" genre="Soft Rock" coverArt="131" size="5253248" contentType="audio/mpeg" suffix="mp3" duration="262" bitRate="160" path="10,000 Maniacs/MTV Unplugged/02 - Eat For Two.mp3" isVideo="false" created="2004-10-25T20:36:06.000Z" albumId="0" artistId="0" type="music"/>
+	<entry id="134" parent="131" isDir="false" title="Candy Everybody Wants" album="MTV Unplugged" artist="10,000 Maniacs" track="3" year="1993" genre="Soft Rock" coverArt="131" size="3993728" contentType="audio/mpeg" suffix="mp3" duration="199" bitRate="160" path="10,000 Maniacs/MTV Unplugged/03 - Candy Everybody Wants.mp3" isVideo="false" created="2004-10-25T20:36:09.000Z" albumId="0" artistId="0" type="music"/>
+	</playQueue>`
 )
 
 func TestUnmarshalAlbum(t *testing.T) {
@@ -112,5 +118,22 @@ func TestUnmarshalDirectory(t *testing.T) {
 	}
 	if len(d.Child) < 1 {
 		t.Error("Failed to unmarshal directory contents")
+	}
+}
+
+func TestUnmarshalPlayQueue(t *testing.T) {
+	var p PlayQueue
+	err := xml.Unmarshal([]byte(playQueueXML), &p)
+	if err != nil {
+		t.Errorf("Error unmarshaling play queue XML: %v", err)
+	}
+	if p.Changed.IsZero() {
+		t.Error("Failed to unmarshal play queue Changed timestamp")
+	}
+	if len(p.Entries) < 1 {
+		t.Error("Failed to unmarshal play queue contents")
+	}
+	if p.Entries[0].Title != "These Are Days" {
+		t.Error("Failed to unmarshal play queue entry properly")
 	}
 }
