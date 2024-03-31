@@ -24,23 +24,25 @@ type IDName struct {
 
 // AlbumID3 is an album that's organized by music file tags.
 type AlbumID3 struct {
-	ID            string    `xml:"id,attr"`        // Manually added
-	Song          []*Child  `xml:"song,omitempty"` // Merged from AlbumWithSongsID3
-	Name          string    `xml:"name,attr"`
-	Artist        string    `xml:"artist,attr,omitempty"`
-	ArtistID      string    `xml:"artistId,attr,omitempty"`
-	Artists       []IDName  `xml:"artists,omitempty"` // OpenSubsonic extension
-	CoverArt      string    `xml:"coverArt,attr,omitempty"`
-	SongCount     int       `xml:"songCount,attr"`
-	Duration      int       `xml:"duration,attr"`
-	PlayCount     int64     `xml:"playCount,attr,omitempty"`
-	Created       time.Time `xml:"created,attr"`
-	Starred       time.Time `xml:"starred,attr,omitempty"`
-	Year          int       `xml:"year,attr,omitempty"`
-	Genre         string    `xml:"genre,attr,omitempty"`
-	Genres        []IDName  `xml:"genres,omitempty"`       // OpenSubsonic extension
-	ReleaseTypes  []string  `xml:"releaseTypes,omitempty"` // OpenSubsonic extension
-	IsCompilation bool      `xml:"isCompilation,attr"`     // OpenSubsonic extension
+	ID                  string    `xml:"id,attr"`        // Manually added
+	Song                []*Child  `xml:"song,omitempty"` // Merged from AlbumWithSongsID3
+	Name                string    `xml:"name,attr"`
+	Artist              string    `xml:"artist,attr,omitempty"`
+	ArtistID            string    `xml:"artistId,attr,omitempty"`
+	Artists             []IDName  `xml:"artists,omitempty"` // OpenSubsonic extension
+	CoverArt            string    `xml:"coverArt,attr,omitempty"`
+	SongCount           int       `xml:"songCount,attr"`
+	Duration            int       `xml:"duration,attr"`
+	PlayCount           int64     `xml:"playCount,attr,omitempty"`
+	Created             time.Time `xml:"created,attr"`
+	Starred             time.Time `xml:"starred,attr,omitempty"`
+	Year                int       `xml:"year,attr,omitempty"`
+	ReleaseDate         *ItemDate `xml:"releaseDate,omitempty"`         // OpenSubsonic extension
+	OriginalReleaseDate *ItemDate `xml:"originalReleaseDate,omitempty"` // OpenSubsonic extension
+	Genre               string    `xml:"genre,attr,omitempty"`
+	Genres              []IDName  `xml:"genres,omitempty"`       // OpenSubsonic extension
+	ReleaseTypes        []string  `xml:"releaseTypes,omitempty"` // OpenSubsonic extension
+	IsCompilation       bool      `xml:"isCompilation,attr"`     // OpenSubsonic extension
 }
 
 func (t *AlbumID3) MarshalXML(e *xml.Encoder, start xml.StartElement) error {

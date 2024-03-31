@@ -26,3 +26,9 @@ type LyricLine struct {
 	Start int    `xml:"start,attr"`
 	Text  string `xml:",chardata"`
 }
+
+type ItemDate struct {
+	Year  *int `xml:"year,attr,omitempty"`
+	Month *int `xml:"month,attr,omitempty"`
+	Date  *int `xml:"date,attr,omitempty"`
+}
