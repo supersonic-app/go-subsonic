@@ -509,7 +509,7 @@ func (t *NowPlayingEntry) UnmarshalXML(d *xml.Decoder, start xml.StartElement) e
 
 type PlayQueue struct {
 	Entries   []*Child  `xml:"entry,omitempty"`
-	Current   int       `xml:"current,attr,omitempty"`
+	Current   string    `xml:"current,attr,omitempty"`
 	Position  int64     `xml:"position,attr,omitempty"`
 	Username  string    `xml:"username,attr"`
 	Changed   time.Time `xml:"changed,attr"`

@@ -137,6 +137,9 @@ func TestUnmarshalPlayQueue(t *testing.T) {
 	if p.Changed.IsZero() {
 		t.Error("Failed to unmarshal play queue Changed timestamp")
 	}
+	if p.Current != "133" {
+		t.Error("Failed to unmarshal play queue current ID properly")
+	}
 	if len(p.Entries) < 1 {
 		t.Error("Failed to unmarshal play queue contents")
 	}
