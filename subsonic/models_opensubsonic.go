@@ -25,6 +25,9 @@ type StructuredLyrics struct {
 type LyricLine struct {
 	Start int    `xml:"start,attr"`
 	Text  string `xml:",chardata"`
+	// Navidrome 0.51.0 - 0.52.5 incorrecty returns the lyric line text here
+	// This will be removed in the future
+	Value string `xml:"value"`
 }
 
 type ItemDate struct {
