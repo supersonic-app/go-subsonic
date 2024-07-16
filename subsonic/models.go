@@ -15,13 +15,6 @@ import (
 	"time"
 )
 
-// Used for any entity where only a name and an ID appear.
-// Eg. OpenSubsonic artists list for an album.
-type IDName struct {
-	ID   string `xml:"id,attr,omitempty"`
-	Name string `xml:"name,attr,omitempty"`
-}
-
 // AlbumID3 is an album that's organized by music file tags.
 type AlbumID3 struct {
 	ID                  string    `xml:"id,attr"`        // Manually added
@@ -230,40 +223,52 @@ type chatMessages struct {
 // Child is a song, or a generic entry in the hierarchical directory structure of the database.
 // You can tell if Child is used as a song contextually based on what it was returned by, or if the IsDir boolean was set to true.
 type Child struct {
-	ID                    string    `xml:"id,attr"` // Manually added
-	Parent                string    `xml:"parent,attr,omitempty"`
-	IsDir                 bool      `xml:"isDir,attr"`
-	Title                 string    `xml:"title,attr"`
-	Album                 string    `xml:"album,attr,omitempty"`
-	Artist                string    `xml:"artist,attr,omitempty"`
-	Artists               []IDName  `xml:"artists,omitempty"` // OpenSubsonic extension
-	Track                 int       `xml:"track,attr,omitempty"`
-	Year                  int       `xml:"year,attr,omitempty"`
-	Genre                 string    `xml:"genre,attr,omitempty"`
-	Genres                []IDName  `xml:"genres,omitempty"`       // OpenSubsonic extension
-	Comment               string    `xml:"comment,attr,omitempty"` // OpenSubsonic extension
-	CoverArt              string    `xml:"coverArt,attr,omitempty"`
-	Size                  int64     `xml:"size,attr,omitempty"`
-	ContentType           string    `xml:"contentType,attr,omitempty"`
-	Suffix                string    `xml:"suffix,attr,omitempty"`
-	TranscodedContentType string    `xml:"transcodedContentType,attr,omitempty"`
-	TranscodedSuffix      string    `xml:"transcodedSuffix,attr,omitempty"`
-	Duration              int       `xml:"duration,attr,omitempty"`
-	BitRate               int       `xml:"bitRate,attr,omitempty"`
-	Path                  string    `xml:"path,attr,omitempty"`
-	IsVideo               bool      `xml:"isVideo,attr,omitempty"`
-	UserRating            int       `xml:"userRating,attr,omitempty"`
-	AverageRating         float64   `xml:"averageRating,attr,omitempty"`
-	PlayCount             int64     `xml:"playCount,attr,omitempty"`
-	DiscNumber            int       `xml:"discNumber,attr,omitempty"`
-	Created               time.Time `xml:"created,attr,omitempty"`
-	Starred               time.Time `xml:"starred,attr,omitempty"`
-	AlbumID               string    `xml:"albumId,attr,omitempty"`
-	ArtistID              string    `xml:"artistId,attr,omitempty"`
-	Type                  string    `xml:"type,attr,omitempty"` // May be one of music, podcast, audiobook, video
-	BookmarkPosition      int64     `xml:"bookmarkPosition,attr,omitempty"`
-	OriginalWidth         int       `xml:"originalWidth,attr,omitempty"`
-	OriginalHeight        int       `xml:"originalHeight,attr,omitempty"`
+	ID                    string        `xml:"id,attr"` // Manually added
+	Parent                string        `xml:"parent,attr,omitempty"`
+	IsDir                 bool          `xml:"isDir,attr"`
+	Title                 string        `xml:"title,attr"`
+	Album                 string        `xml:"album,attr,omitempty"`
+	Artist                string        `xml:"artist,attr,omitempty"`
+	Artists               []IDName      `xml:"artists,omitempty"`                 // OpenSubsonic extension
+	AlbumArtists          []IDName      `xml:"albumArtists,omitempty"`            // OpenSubsonic extension
+	DisplayArtist         string        `xml:"displayArtist,attr,omitempty"`      // OpenSubsonic extension
+	DisplayAlbumArtist    string        `xml:"displayAlbumArtist,attr,omitempty"` // OpenSubsonic extension
+	Contributors          []Contributor `xml:"contributors,omitempty"`            // OpenSubsonic extension
+	DisplayComposer       string        `xml:"displayComposer,attr,omitempty"`    // OpenSubsonic extension
+	Track                 int           `xml:"track,attr,omitempty"`
+	Year                  int           `xml:"year,attr,omitempty"`
+	Genre                 string        `xml:"genre,attr,omitempty"`
+	Genres                []IDName      `xml:"genres,omitempty"`             // OpenSubsonic extension
+	Comment               string        `xml:"comment,attr,omitempty"`       // OpenSubsonic extension
+	BPM                   int           `xml:"bpm,attr"`                     // OpenSubsonic extension
+	MusicBrainzID         string        `xml:"musicBrainzId,attr,omitempty"` // OpenSubsonic extension
+	CoverArt              string        `xml:"coverArt,attr,omitempty"`
+	Size                  int64         `xml:"size,attr,omitempty"`
+	ContentType           string        `xml:"contentType,attr,omitempty"`
+	Suffix                string        `xml:"suffix,attr,omitempty"`
+	TranscodedContentType string        `xml:"transcodedContentType,attr,omitempty"`
+	TranscodedSuffix      string        `xml:"transcodedSuffix,attr,omitempty"`
+	Duration              int           `xml:"duration,attr,omitempty"`
+	BitRate               int           `xml:"bitRate,attr,omitempty"`
+	BitDepth              int           `xml:"bitDepth,attr,omitempty"`     // OpenSubsonic extension
+	SamplingRate          int           `xml:"samplingRate,attr,omitempty"` // OpenSubsonic extension
+	ChannelCount          int           `xml:"channelCount,attr,omitempty"` // OpenSubsonic extension
+	Path                  string        `xml:"path,attr,omitempty"`
+	IsVideo               bool          `xml:"isVideo,attr,omitempty"`
+	UserRating            int           `xml:"userRating,attr,omitempty"`
+	AverageRating         float64       `xml:"averageRating,attr,omitempty"`
+	PlayCount             int64         `xml:"playCount,attr,omitempty"`
+	DiscNumber            int           `xml:"discNumber,attr,omitempty"`
+	Created               time.Time     `xml:"created,attr,omitempty"`
+	Starred               time.Time     `xml:"starred,attr,omitempty"`
+	Played                time.Time     `xml:"played,attr,omitempty"` // OpenSubsonic extension
+	AlbumID               string        `xml:"albumId,attr,omitempty"`
+	ArtistID              string        `xml:"artistId,attr,omitempty"`
+	Type                  string        `xml:"type,attr,omitempty"` // May be one of music, podcast, audiobook, video
+	BookmarkPosition      int64         `xml:"bookmarkPosition,attr,omitempty"`
+	OriginalWidth         int           `xml:"originalWidth,attr,omitempty"`
+	OriginalHeight        int           `xml:"originalHeight,attr,omitempty"`
+	ReplayGain            *ReplayGain   `xml:"replayGain,omitempty"` // OpenSubsonic extension
 }
 
 func (t *Child) MarshalXML(e *xml.Encoder, start xml.StartElement) error {

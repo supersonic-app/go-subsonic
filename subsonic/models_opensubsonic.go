@@ -1,5 +1,12 @@
 package subsonic
 
+// Used for any entity where only a name and an ID appear.
+// Eg. OpenSubsonic artists list for an album.
+type IDName struct {
+	ID   string `xml:"id,attr,omitempty"`
+	Name string `xml:"name,attr,omitempty"`
+}
+
 type OpenSubsonicExtension struct {
 	Name     string `xml:"name,attr"`
 	Versions []int  `xml:"versions"`
@@ -34,4 +41,16 @@ type ItemDate struct {
 	Year  *int `xml:"year,attr,omitempty"`
 	Month *int `xml:"month,attr,omitempty"`
 	Date  *int `xml:"date,attr,omitempty"`
+}
+
+type Contributor struct {
+	Role   string `xml:"role,attr"`
+	Artist IDName `xml:"artist"`
+}
+
+type ReplayGain struct {
+	TrackGain float64 `xml:"trackGain,omitempty,attr"    json:"trackGain,omitempty"`
+	AlbumGain float64 `xml:"albumGain,omitempty,attr"    json:"albumGain,omitempty"`
+	TrackPeak float64 `xml:"trackPeak,omitempty,attr"    json:"trackPeak,omitempty"`
+	AlbumPeak float64 `xml:"albumPeak,omitempty,attr"    json:"albumPeak,omitempty"`
 }
