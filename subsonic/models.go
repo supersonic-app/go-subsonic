@@ -277,10 +277,12 @@ func (t *Child) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
 		*T
 		Created *xsdDateTime `xml:"created,attr,omitempty"`
 		Starred *xsdDateTime `xml:"starred,attr,omitempty"`
+		Played  *xsdDateTime `xml:"played,attr,omitempty"`
 	}
 	layout.T = (*T)(t)
 	layout.Created = (*xsdDateTime)(&layout.T.Created)
 	layout.Starred = (*xsdDateTime)(&layout.T.Starred)
+	layout.Played = (*xsdDateTime)(&layout.T.Played)
 	return e.EncodeElement(layout, start)
 }
 func (t *Child) UnmarshalXML(d *xml.Decoder, start xml.StartElement) error {
@@ -289,10 +291,12 @@ func (t *Child) UnmarshalXML(d *xml.Decoder, start xml.StartElement) error {
 		*T
 		Created *xsdDateTime `xml:"created,attr,omitempty"`
 		Starred *xsdDateTime `xml:"starred,attr,omitempty"`
+		Played  *xsdDateTime `xml:"played,attr,omitempty"`
 	}
 	overlay.T = (*T)(t)
 	overlay.Created = (*xsdDateTime)(&overlay.T.Created)
 	overlay.Starred = (*xsdDateTime)(&overlay.T.Starred)
+	overlay.Played = (*xsdDateTime)(&overlay.T.Played)
 	return d.DecodeElement(&overlay, &start)
 }
 
