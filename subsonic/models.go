@@ -889,6 +889,10 @@ func (t xsdDateTime) MarshalXMLAttr(name xml.Name) (xml.Attr, error) {
 }
 func _unmarshalTime(text []byte, t *time.Time, format string) (err error) {
 	s := string(bytes.TrimSpace(text))
+	if s == "" {
+		*t = time.Time{}
+		return nil
+	}
 	*t, err = time.Parse(format, s)
 	if _, ok := err.(*time.ParseError); ok {
 		*t, err = time.Parse(format+"Z07:00", s)
