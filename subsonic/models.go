@@ -121,6 +121,8 @@ type ArtistID3 struct {
 	ArtistImageUrl string      `xml:"artistImageUrl,attr,omitempty"`
 	AlbumCount     int         `xml:"albumCount,attr"`
 	Starred        time.Time   `xml:"starred,attr,omitempty"`
+	SortName       string      `xml:"sortName,attr,omitempty"`      // OpenSubsonic extension
+	MusicBrainzId  string      `xml:"musicBrainzId,attr,omitempty"` // OpenSubsonic extension
 }
 
 func (t *ArtistID3) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
