@@ -1,4 +1,4 @@
-module github.com/dweymouth/go-subsonic
+module github.com/supersonic-app/go-subsonic
 
 go 1.13
 
