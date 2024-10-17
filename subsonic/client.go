@@ -36,6 +36,7 @@ type Client struct {
 	BaseUrl             string
 	User                string
 	ClientName          string
+	UserAgent           string
 	PasswordAuth        bool
 	RequestedAPIVersion string
 
@@ -128,6 +129,9 @@ func (s *Client) setupRequest(method string, endpoint string, params url.Values)
 	req, err := http.NewRequest(method, baseUrl.String(), nil)
 	if err != nil {
 		return nil, err
+	}
+	if u := s.UserAgent; u != "" {
+		req.Header.Set("User-Agent", u)
 	}
 
 	q := req.URL.Query()
