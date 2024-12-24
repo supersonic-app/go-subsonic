@@ -9,6 +9,7 @@ import (
 const (
 	albumXML = `<album id="11053" name="High Voltage" coverArt="al-11053" songCount="8" created="2004-11-27T20:23:32" duration="2414" artist="AC/DC" artistId="5432">
 	<originalReleaseDate year="2020" month="02"/>
+	<releaseDate year="2024" month="02" day="04"/>
 	<song id="71463" parent="71381" title="The Jack" album="High Voltage" artist="AC/DC" isDir="false" coverArt="71381" created="2004-11-08T23:36:11" duration="352" bitRate="128" size="5624132" suffix="mp3" contentType="audio/mpeg" isVideo="false" path="ACDC/High voltage/ACDC - The Jack.mp3" albumId="11053" artistId="5432" type="music"/>
 	<song id="71464" parent="71381" title="Tnt" album="High Voltage" artist="AC/DC" isDir="false" coverArt="71381" created="2004-11-08T23:36:11" duration="215" bitRate="128" size="3433798" suffix="mp3" contentType="audio/mpeg" isVideo="false" path="ACDC/High voltage/ACDC - TNT.mp3" albumId="11053" artistId="5432" type="music"/>
 	<song id="71458" parent="71381" title="It's A Long Way To The Top" album="High Voltage" artist="AC/DC" isDir="false" coverArt="71381" created="2004-11-27T20:23:32" duration="315" bitRate="128" year="1976" genre="Rock" size="5037357" suffix="mp3" contentType="audio/mpeg" isVideo="false" path="ACDC/High voltage/ACDC - It's a long way to the top if you wanna rock 'n 'roll.mp3" albumId="11053" artistId="5432" type="music"/>
@@ -78,8 +79,20 @@ func TestUnmarshalAlbum(t *testing.T) {
 	if *a.OriginalReleaseDate.Year != 2020 {
 		t.Error("Failed to unmarshal originalReleaseDate properly")
 	}
-	if a.OriginalReleaseDate.Date != nil {
+	if *a.OriginalReleaseDate.Month != 2 {
 		t.Error("Failed to unmarshal originalReleaseDate properly")
+	}
+	if a.OriginalReleaseDate.Day != nil {
+		t.Error("Failed to unmarshal originalReleaseDate properly")
+	}
+	if *a.ReleaseDate.Year != 2024 {
+		t.Error("Failed to unmarshal ReleaseDate properly")
+	}
+	if *a.ReleaseDate.Month != 2 {
+		t.Error("Failed to unmarshal ReleaseDate properly")
+	}
+	if *a.ReleaseDate.Day != 4 {
+		t.Error("Failed to unmarshal ReleaseDate properly")
 	}
 }
 

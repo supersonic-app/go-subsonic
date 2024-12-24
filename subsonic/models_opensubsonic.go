@@ -40,7 +40,7 @@ type LyricLine struct {
 type ItemDate struct {
 	Year  *int `xml:"year,attr,omitempty"`
 	Month *int `xml:"month,attr,omitempty"`
-	Date  *int `xml:"date,attr,omitempty"`
+	Day   *int `xml:"day,attr,omitempty"`
 }
 
 type Contributor struct {
