@@ -706,6 +706,7 @@ type Response struct {
 	InternetRadioStations  *internetRadioStations   `xml:"internetRadioStations"`
 	Bookmarks              *bookmarks               `xml:"bookmarks"`
 	PlayQueue              *PlayQueue               `xml:"playQueue"`
+	PlayQueueByIndex       *PlayQueueByIndex        `xml:"playQueueByIndex"` // OpenSubsonic extension indexBasedQueue
 	Shares                 *shares                  `xml:"shares"`
 	Starred                *Starred                 `xml:"starred"`
 	Starred2               *Starred2                `xml:"starred2"`

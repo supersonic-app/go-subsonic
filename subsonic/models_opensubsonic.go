@@ -1,5 +1,7 @@
 package subsonic
 
+import "time"
+
 // Used for any entity where only a name and an ID appear.
 // Eg. OpenSubsonic artists list for an album.
 type IDName struct {
@@ -53,4 +55,13 @@ type ReplayGain struct {
 	AlbumGain float64 `xml:"albumGain,omitempty,attr"    json:"albumGain,omitempty"`
 	TrackPeak float64 `xml:"trackPeak,omitempty,attr"    json:"trackPeak,omitempty"`
 	AlbumPeak float64 `xml:"albumPeak,omitempty,attr"    json:"albumPeak,omitempty"`
+}
+
+type PlayQueueByIndex struct {
+	Entries      []*Child  `xml:"entry,omitempty"`
+	CurrentIndex int64     `xml:"currentIndex,attr,omitempty"`
+	Position     int64     `xml:"position,attr,omitempty"`
+	Username     string    `xml:"username,attr"`
+	Changed      time.Time `xml:"changed,attr"`
+	ChangedBy    string    `xml:"changedBy,attr"`
 }
