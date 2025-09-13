@@ -3,6 +3,7 @@ package subsonic
 import (
 	"errors"
 	"net/url"
+	"slices"
 	"strconv"
 )
 
@@ -44,7 +45,7 @@ func (s *Client) CreatePlaylist(parameters map[string]string) error {
 	_, idPresent := parameters["playlistId"]
 	_, namePresent := parameters["name"]
 	if !(idPresent || namePresent) {
-		return errors.New("One of name or playlistId is mandatory, to create or update a playlist respectively")
+		return errors.New("one of name or playlistId is mandatory, to create or update a playlist respectively")
 	}
 	_, err := s.Get("createPlaylist", parameters)
 	if err != nil {
@@ -74,8 +75,7 @@ func (s *Client) CreatePlaylistWithTracks(trackIDs []string, parameters map[stri
 	for k, v := range parameters {
 		values.Add(k, v)
 	}
-	_, err := s.getValues("createPlaylist", values)
-	return err
+	return s.getOrPost("createPlaylist", values)
 }
 
 // UpdatePlaylist updates a playlist. Only the owner of a playlist is allowed to update it.
@@ -115,7 +115,20 @@ func (s *Client) UpdatePlaylistTracks(
 	for _, trIdx := range trackIndexesToRemove {
 		values.Add("songIndexToRemove", strconv.Itoa(trIdx))
 	}
-	_, err := s.getValues("updatePlaylist", values)
+	return s.getOrPost("updatePlaylist", values)
+}
+
+func (s *Client) getOrPost(endpoint string, values url.Values) error {
+	ose, _ := s.getOpenSubsonicExtensions()
+	supportsPost := slices.ContainsFunc(ose, func(e *OpenSubsonicExtension) bool {
+		return e.Name == HTTPFormPost
+	})
+	var err error
+	if supportsPost {
+		_, err = s.postValues(endpoint, values)
+	} else {
+		_, err = s.getValues(endpoint, values)
+	}
 	return err
 }
 

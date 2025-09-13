@@ -2,10 +2,12 @@ package subsonic
 
 import "net/url"
 
+// OpenSubsonic extension names
 const (
 	SongLyricsExtension = "songLyrics"
 	TranscodeOffset     = "transcodeOffset"
 	IndexBasedQueue     = "indexBasedQueue"
+	HTTPFormPost        = "formPost"
 )
 
 // Get the list of supported OpenSubsonic extensions for this server.

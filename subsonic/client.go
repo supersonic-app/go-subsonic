@@ -20,6 +20,7 @@ import (
 	"net/http"
 	"net/url"
 	"path"
+	"strings"
 )
 
 const (
@@ -39,6 +40,8 @@ type Client struct {
 	UserAgent           string
 	PasswordAuth        bool
 	RequestedAPIVersion string
+
+	openSubsonicExtensions []*OpenSubsonicExtension
 
 	password string
 	salt     string
@@ -121,11 +124,11 @@ func (s *Client) Get(endpoint string, params map[string]string) (*Response, erro
 }
 
 func (s *Client) setupRequest(method string, endpoint string, params url.Values) (*http.Request, error) {
-	baseUrl, err := url.Parse(s.BaseUrl)
+	baseUrl, err := s.buildRequestURL(endpoint)
 	if err != nil {
 		return nil, err
 	}
-	baseUrl.Path = path.Join(baseUrl.Path, "/rest/", endpoint)
+
 	req, err := http.NewRequest(method, baseUrl.String(), nil)
 	if err != nil {
 		return nil, err
@@ -135,20 +138,7 @@ func (s *Client) setupRequest(method string, endpoint string, params url.Values)
 	}
 
 	q := req.URL.Query()
-	q.Add("f", "xml")
-	apiVersion := defaultAPIVersion
-	if s.RequestedAPIVersion != "" {
-		apiVersion = s.RequestedAPIVersion
-	}
-	q.Add("v", apiVersion)
-	q.Add("c", s.ClientName)
-	q.Add("u", s.User)
-	if s.PasswordAuth {
-		q.Add("p", s.password)
-	} else {
-		q.Add("t", s.token)
-		q.Add("s", s.salt)
-	}
+	s.addDefaultQueryParams(q)
 
 	for key, values := range params {
 		for _, val := range values {
@@ -156,13 +146,29 @@ func (s *Client) setupRequest(method string, endpoint string, params url.Values)
 		}
 	}
 	req.URL.RawQuery = q.Encode()
-	//log.Printf("%s %s", method, req.URL.String())
 	return req, nil
+}
+
+func (s *Client) addDefaultQueryParams(params url.Values) {
+	params.Add("f", "xml")
+	apiVersion := defaultAPIVersion
+	if s.RequestedAPIVersion != "" {
+		apiVersion = s.RequestedAPIVersion
+	}
+	params.Add("v", apiVersion)
+	params.Add("c", s.ClientName)
+	params.Add("u", s.User)
+	if s.PasswordAuth {
+		params.Add("p", s.password)
+	} else {
+		params.Add("t", s.token)
+		params.Add("s", s.salt)
+	}
 }
 
 // getValues is a convenience interface to issue a GET request and parse the response body. It supports multiple values by way of the url.Values argument.
 func (s *Client) getValues(endpoint string, params url.Values) (*Response, error) {
-	response, err := s.Request("GET", endpoint, params)
+	response, err := s.Request(http.MethodGet, endpoint, params)
 	if err != nil {
 		return nil, err
 	}
@@ -176,6 +182,51 @@ func (s *Client) getValues(endpoint string, params url.Values) (*Response, error
 	}
 	//log.Printf("%s: %s\n", endpoint, string(responseBody))
 	return parsed, nil
+}
+
+// postValues is the same as getValues except it sends the request
+// using POST and content type application/x-www-form-urlencoded.
+// The server must support the formPost extension.
+func (s *Client) postValues(endpoint string, params url.Values) (*Response, error) {
+	baseUrl, err := s.buildRequestURL(endpoint)
+	if err != nil {
+		return nil, err
+	}
+
+	s.addDefaultQueryParams(params)
+	body := strings.NewReader(params.Encode())
+	req, err := http.NewRequest(http.MethodPost, baseUrl.String(), body)
+	if err != nil {
+		return nil, err
+	}
+	if u := s.UserAgent; u != "" {
+		req.Header.Set("User-Agent", u)
+	}
+	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
+
+	resp, err := s.Client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+
+	defer resp.Body.Close()
+	parsed, err := unmarshalResponse(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	if parsed.Error != nil {
+		return nil, fmt.Errorf("Error #%d: %s", parsed.Error.Code, parsed.Error.Message)
+	}
+	return parsed, nil
+}
+
+func (s *Client) buildRequestURL(endpoint string) (*url.URL, error) {
+	baseUrl, err := url.Parse(s.BaseUrl)
+	if err != nil {
+		return nil, err
+	}
+	baseUrl.Path = path.Join(baseUrl.Path, "/rest/", endpoint)
+	return baseUrl, nil
 }
 
 func unmarshalResponse(resp io.Reader) (*Response, error) {
@@ -210,4 +261,13 @@ func (s *Client) GetLicense() (*License, error) {
 		return nil, err
 	}
 	return resp.License, nil
+}
+
+func (s *Client) getOpenSubsonicExtensions() ([]*OpenSubsonicExtension, error) {
+	if s.openSubsonicExtensions != nil {
+		return s.openSubsonicExtensions, nil
+	}
+	ose, err := s.GetOpenSubsonicExtensions()
+	s.openSubsonicExtensions = ose
+	return ose, err
 }
