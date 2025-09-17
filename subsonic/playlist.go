@@ -41,17 +41,18 @@ func (s *Client) GetPlaylist(id string) (*Playlist, error) {
 //	name:       The human-readable name of the playlist.
 //
 // This returns a Playlist object in Subsonic > 1.14.0, so it cannot consistently return a *Playlist
-func (s *Client) CreatePlaylist(parameters map[string]string) error {
+// For Subsonic <= 1.14.0, the returned *Playlist will be nil even if the error is nil
+func (s *Client) CreatePlaylist(parameters map[string]string) (*Playlist, error) {
 	_, idPresent := parameters["playlistId"]
 	_, namePresent := parameters["name"]
 	if !(idPresent || namePresent) {
-		return errors.New("one of name or playlistId is mandatory, to create or update a playlist respectively")
+		return nil, errors.New("one of name or playlistId is mandatory, to create or update a playlist respectively")
 	}
-	_, err := s.Get("createPlaylist", parameters)
+	resp, err := s.Get("createPlaylist", parameters)
 	if err != nil {
-		return err
+		return nil, err
 	}
-	return nil
+	return resp.Playlist, nil
 }
 
 // CreatePlaylistWithTracks creates (or updates) a playlist, with the given tracks being added.

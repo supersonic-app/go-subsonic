@@ -25,7 +25,7 @@ func runPlaylistTests(client Client, t *testing.T) {
 	// State-heavy test for playlist CRUD
 	testPlaylistName := fmt.Sprintf("Test playlist %v", time.Now().Unix())
 	t.Run("CreatePlaylist", func(t *testing.T) {
-		err := client.CreatePlaylist(map[string]string{
+		_, err := client.CreatePlaylist(map[string]string{
 			"name": testPlaylistName,
 		})
 		if err != nil {
