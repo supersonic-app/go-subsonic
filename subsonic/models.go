@@ -40,6 +40,7 @@ type AlbumID3 struct {
 	PlayCount           int64       `xml:"playCount,attr,omitempty"      json:"playCount,omitempty"`
 	Created             time.Time   `xml:"created,attr"                  json:"created"`
 	Starred             time.Time   `xml:"starred,attr,omitempty"        json:"starred,omitempty"`
+	UserRating          int         `xml:"userRating,attr,omitempty"     json:"userRating,omitempty"`
 	Year                int         `xml:"year,attr,omitempty"           json:"year,omitempty"`
 	ReleaseDate         *ItemDate   `xml:"releaseDate,omitempty"         json:"releaseDate,omitempty"`
 	OriginalReleaseDate *ItemDate   `xml:"originalReleaseDate,omitempty" json:"originalReleaseDate,omitempty"`

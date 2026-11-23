@@ -1,6 +1,7 @@
 package subsonic
 
 import (
+	"encoding/json"
 	"encoding/xml"
 	"testing"
 )
@@ -93,6 +94,24 @@ func TestUnmarshalAlbum(t *testing.T) {
 	}
 	if *a.ReleaseDate.Day != 4 {
 		t.Error("Failed to unmarshal ReleaseDate properly")
+	}
+}
+
+func TestUnmarshalAlbumUserRating(t *testing.T) {
+	var x AlbumID3
+	if err := xml.Unmarshal([]byte(`<album id="1" name="A" songCount="1" duration="1" created="2004-11-27T20:23:32" userRating="4"/>`), &x); err != nil {
+		t.Fatalf("Error unmarshaling album XML: %v", err)
+	}
+	if x.UserRating != 4 {
+		t.Errorf("XML album UserRating = %d, want 4", x.UserRating)
+	}
+
+	var j AlbumID3
+	if err := json.Unmarshal([]byte(`{"id":"1","name":"A","songCount":1,"duration":1,"created":"2004-11-27T20:23:32Z","userRating":3}`), &j); err != nil {
+		t.Fatalf("Error unmarshaling album JSON: %v", err)
+	}
+	if j.UserRating != 3 {
+		t.Errorf("JSON album UserRating = %d, want 3", j.UserRating)
 	}
 }
 
